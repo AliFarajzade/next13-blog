@@ -10,11 +10,8 @@ const PostItem: React.FC<IProps> = ({ post }) => {
     const formattedDate = getFormattedDate(date)
 
     return (
-        <li className="mt-4 text-2xl dark:text-white/90">
-            <Link
-                className="underline hover:text-black/70 dark:hover:text-white"
-                href={`/posts/${id}`}
-            >
+        <li className="mt-4 text-2xl text-white/90">
+            <Link className="underline hover:text-white" href={`/posts/${id}`}>
                 {title}
             </Link>
             <br />

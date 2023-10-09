@@ -1,6 +1,6 @@
 import { getPostData, getSortedPosts } from '@/lib/md-parser.util'
 import { getFormattedDate } from '@/lib/time.util'
-import { Metadata, NextPage } from 'next'
+import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 
@@ -33,7 +33,7 @@ export function generateMetadata({ params: { postId } }: IProps): Metadata {
     }
 }
 
-const Page: NextPage<IProps> = async ({ params: { postId } }) => {
+const Page = async ({ params: { postId } }: IProps) => {
     const posts = getSortedPosts()
 
     const post = posts.find(p => p.id === postId)
@@ -44,7 +44,7 @@ const Page: NextPage<IProps> = async ({ params: { postId } }) => {
     const formattedDate = getFormattedDate(date)
 
     return (
-        <main className="px-6 prose prose-xl prose-slate dark:prose-invert mx-auto">
+        <main className="px-6 prose prose-xl prose-invert mx-auto">
             <h1 className="text-3xl mt-4 mb-0">{title}</h1>
             <p className="mt-0">{formattedDate}</p>
             <article>
