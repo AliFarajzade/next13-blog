@@ -17,8 +17,7 @@ const RootLayout: React.FC<IProps> = ({ children }) => {
         <html lang="en">
             <body className={classNames(interFont.className, 'bg-slate-800')}>
                 <Navbar />
-
-                {children}
+                <main className="px-6 prose prose-xl prose-invert mx-auto">{children}</main>
             </body>
         </html>
     )

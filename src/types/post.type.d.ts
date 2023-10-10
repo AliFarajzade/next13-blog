@@ -1,5 +1,6 @@
-type TPost = {
+type TMeta = {
     id: string
     title: string
     date: string
+    tags: string[]
 }
