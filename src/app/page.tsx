@@ -1,7 +1,7 @@
 import PostList from '@/components/post-list.component'
 import { NextPage } from 'next'
 
-export const revalidate = 10
+export const revalidate = 1 * 24 * 60 * 60
 
 const Page: NextPage = () => {
     return (

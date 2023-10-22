@@ -3,7 +3,7 @@ import { getPostsMeta } from '@/lib/md-parser.util'
 import { Metadata } from 'next'
 import Link from 'next/link'
 
-export const revalidate = 10
+export const revalidate = 1 * 24 * 60 * 60
 
 interface IProps {
     params: {

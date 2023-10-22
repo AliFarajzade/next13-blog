@@ -11,7 +11,7 @@ interface IProps {
     }
 }
 
-export const revalidate = 10
+export const revalidate = 1 * 24 * 60 * 60
 
 export async function generateStaticParams() {
     const posts = await getPostsMeta()
