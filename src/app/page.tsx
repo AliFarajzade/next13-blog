@@ -1,6 +1,8 @@
 import PostList from '@/components/post-list.component'
 import { NextPage } from 'next'
 
+export const revalidate = 10
+
 const Page: NextPage = () => {
     return (
         <div className="mx-auto">
@@ -10,6 +12,7 @@ const Page: NextPage = () => {
                     I'm <span className="font-bold">Ali</span>.
                 </span>
             </p>
+            {/* @ts-ignore Component */}
             <PostList />
         </div>
     )

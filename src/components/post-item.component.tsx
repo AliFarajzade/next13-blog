@@ -2,7 +2,7 @@ import { getFormattedDate } from '@/lib/time.util'
 import Link from 'next/link'
 
 interface IProps {
-    post: TPost
+    post: TMeta
 }
 
 const PostItem: React.FC<IProps> = ({ post }) => {

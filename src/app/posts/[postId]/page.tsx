@@ -1,5 +1,6 @@
-import { getPostData, getSortedPosts } from '@/lib/md-parser.util'
+import { getPostByName, getPostsMeta } from '@/lib/md-parser.util'
 import { getFormattedDate } from '@/lib/time.util'
+import 'highlight.js/styles/github-dark.css'
 import { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
@@ -10,50 +11,59 @@ interface IProps {
     }
 }
 
-export function generateStaticParams() {
-    const posts = getSortedPosts()
+export const revalidate = 10
+
+export async function generateStaticParams() {
+    const posts = await getPostsMeta()
+
+    if (posts === undefined) return []
 
     return posts.map(p => ({
         postId: p.id,
     }))
 }
 
-export function generateMetadata({ params: { postId } }: IProps): Metadata {
-    const posts = getSortedPosts()
+export async function generateMetadata({ params: { postId } }: IProps): Promise<Metadata> {
+    const post = await getPostByName(`${postId}.mdx`)
 
-    const post = posts.find(p => p.id === postId)
-
-    if (!post)
+    if (post === undefined)
         return {
             title: 'Post not found',
         }
 
     return {
-        title: post.title,
+        title: post.meta.title,
     }
 }
 
 const Page = async ({ params: { postId } }: IProps) => {
-    const posts = getSortedPosts()
+    const post = await getPostByName(`${postId}.mdx`)
 
-    const post = posts.find(p => p.id === postId)
+    if (post === undefined) return notFound()
 
-    if (!post) return notFound()
+    const { content, meta } = post
 
-    const { title, date, contentHtml } = await getPostData(postId)
-    const formattedDate = getFormattedDate(date)
+    const formattedDate = getFormattedDate(meta.date)
+
+    const tags = meta.tags.map((tag, i) => (
+        <Link key={i} href={`/tags/${tag}`}>
+            {tag}
+        </Link>
+    ))
 
     return (
-        <main className="px-6 prose prose-xl prose-invert mx-auto">
-            <h1 className="text-3xl mt-4 mb-0">{title}</h1>
-            <p className="mt-0">{formattedDate}</p>
-            <article>
-                <section dangerouslySetInnerHTML={{ __html: contentHtml }} />
-                <p>
-                    <Link href="/">← Back to home</Link>
-                </p>
-            </article>
-        </main>
+        <>
+            <h2 className="text-3xl mt-4 mb-0">{meta.title}</h2>
+            <h2 className="mt-0 text-sm">{formattedDate}</h2>
+            <article>{content}</article>
+            <section>
+                <h3>Related: </h3>
+                <div className="flex flex-wrap gap-4">{tags}</div>
+            </section>
+            <p className="mb-10">
+                <Link href={'/'}>Back to Home</Link>
+            </p>
+        </>
     )
 }
 
